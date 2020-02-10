@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:aquaphonics/tabviews/home.dart';
+import 'package:aquaphonics/tabviews/control.dart';
+import 'package:aquaphonics/tabviews/report.dart';
 
 class App extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -17,9 +20,9 @@ class App extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            Icon(Icons.home),
-            Icon(Icons.build),
-            Icon(Icons.insert_chart),
+            Home(),
+            Control(),
+            Report(),
           ],
         ),
       ),
