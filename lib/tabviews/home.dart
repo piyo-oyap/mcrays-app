@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
             padding: EdgeInsets.all(10),
             sliver: SliverGrid.count(
               mainAxisSpacing: 20,
-              childAspectRatio: 1.0,
+              childAspectRatio: 1.2,
               crossAxisSpacing: 20,
               crossAxisCount: 2,
               children: <Widget>[
