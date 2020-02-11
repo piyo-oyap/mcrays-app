@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:aquaphonics/tabviews/home.dart';
 import 'package:aquaphonics/tabviews/control.dart';
 import 'package:aquaphonics/tabviews/report.dart';
+import 'package:aquaphonics/websocket_helper.dart';
 
 class App extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -28,8 +29,12 @@ class App extends StatelessWidget {
       ),
     ),
   );
+
+
   @override
   Widget build(BuildContext context) {
+    sockets.initWebSocket();
+
     return materialApp;
   }
 }
