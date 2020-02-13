@@ -4,7 +4,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 WebSocketListener sockets = new WebSocketListener();
 
-const String _SERVER_ADDRESS = "ws://10.0.0.33:5001";
+// TODO: Make this configurable on app
+const String _SERVER_ADDRESS = "ws://10.0.0.4:5001";
 
 class WebSocketListener {
   static final WebSocketListener _sockets = new WebSocketListener._internal();
@@ -25,10 +26,11 @@ class WebSocketListener {
       reset();
 
       try {
-      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS, headers: {"Device": "Client"});
+      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS, protocols: ["client"]);
       
-      _channel.stream.listen(_onReceptionOfMessageFromServer);
 
+      // TODO: Implement listeners for closed & error status
+      _channel.stream.listen(_onReceptionOfMessageFromServer);
 
     } catch(e){
 
@@ -41,7 +43,7 @@ class WebSocketListener {
         _isOn = false;
     }
   }
-  
+
   send(String message){
     if (_channel != null){
       if (_channel.sink != null && _isOn){
