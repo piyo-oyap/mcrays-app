@@ -54,7 +54,7 @@ class _NumberInput extends State<NumberInput> {
             ),
             padding: EdgeInsets.all(10.0),
             child: Text(
-              'Styled RaisedButton',
+              'Feed Manually',
               style: TextStyle(fontSize: 17)
             ),
           ),
