@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/message_communication.dart';
+import 'package:aquaphonics/ui/home_list.dart';
 
 class Home extends StatelessWidget {
   final int gridBGColor = 0xFF64DCEA;
@@ -81,51 +82,21 @@ class Home extends StatelessWidget {
     );
   }
 
-  final SliverChildBuilderDelegate listChildren = 
-    SliverChildBuilderDelegate(
-      (BuildContext context, int index) {
-        String label;
-        if (index.isEven) {
-          switch (index ~/ 2) {
-            case 0:
-              label = "Water Temperature";
-              break;
-            case 1:
-              label = "Water Level Aquarium";
-              break;
-            case 2:
-              label = "Water Level Tank";
-              break;
-            case 3:
-              label = "Air Temperature";
-              break;
-            case 4:
-              label = "Air Humidity";
-              break;
-            case 5:
-              label = "Remaining Feeds";
-              break;
-            default:
-              label = "!!!Index out of range!!!";
-              throw Exception("Index is out of range.");
-          }
-
-          return Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: Row(
-              children: <Widget>[
-                Expanded(child: Text("$label"),),
-                Text("100"),
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-            color: Color(0xFF64EAA2),
-            height: 50,
-          );
-        }
-        return SizedBox(height: 15,);
-      },
-      childCount: 11,
+  final SliverChildListDelegate listChildren = 
+    SliverChildListDelegate.fixed(
+      <Widget>[
+        HomeListView(type: HomeListNames.WaterTemp),
+        SizedBox(height: 15),
+        HomeListView(type: HomeListNames.WaterLevelAqua),
+        SizedBox(height: 15),
+        HomeListView(type: HomeListNames.WaterLevelTank),
+        SizedBox(height: 15),
+        HomeListView(type: HomeListNames.AirTemp),
+        SizedBox(height: 15),
+        HomeListView(type: HomeListNames.AirHumid),
+        SizedBox(height: 15),
+        HomeListView(type: HomeListNames.RemainingFeeds),
+        
+      ],
     );
 }
