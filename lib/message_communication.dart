@@ -33,10 +33,6 @@ class MessageCommunication {
           callback(json);
         });
         break;
-      default:
-        _commandListeners.forEach((Function callback) {
-          callback(message);
-        });
     }
   }
   addConnectionListener(Function callback) {
@@ -45,6 +41,7 @@ class MessageCommunication {
   addCommandListener(Function callback) {
     _commandListeners.add(callback);
   }
+  
   removeConnectionListener(Function callback) {
     _connectionListeners.remove(callback);
   }
@@ -53,7 +50,7 @@ class MessageCommunication {
   }
 
   send(String type, String content) {
-    sendRaw(json.encode({type: content}));
+    sendRaw(json.encode( { "type": type, "content": content} ));
   }
   sendRaw(String message) {
     sockets.send(message);

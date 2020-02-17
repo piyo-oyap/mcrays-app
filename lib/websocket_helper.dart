@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 WebSocketListener sockets = new WebSocketListener();
 
@@ -26,20 +25,27 @@ class WebSocketListener {
       reset();
 
       try {
-      _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS, protocols: ["client"]);
-      
+        // TODO: adjust ping interval
+        _channel = new IOWebSocketChannel.connect(_SERVER_ADDRESS, protocols: ["client"], pingInterval: Duration(seconds: 6));
+        
 
-      // TODO: Implement listeners for closed & error status
-      _channel.stream.listen(_onReceptionOfMessageFromServer);
+        // TODO: Implement listeners for closed & error status
+        _channel.stream.listen(_onReceptionOfMessageFromServer, onDone: _handleDisconnection,);
 
-    } catch(e){
-
+      } catch(e){
+        debugPrint("An exception occurred while trying to connect to the WebSocket server.");
+        debugPrint(e);
     }
+  }
+
+  _handleDisconnection() {
+    debugPrint("Connection to WebSocket server lost. Reconnecting...");
+    initWebSocket();
   }
 
   reset() {
     if (_channel != null && _channel.sink != null) {
-        _channel.sink.close();
+        // _channel.sink.close();
         _isOn = false;
     }
   }

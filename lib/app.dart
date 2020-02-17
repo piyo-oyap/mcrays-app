@@ -5,7 +5,7 @@ import 'package:aquaphonics/tabviews/home.dart';
 import 'package:aquaphonics/tabviews/control.dart';
 import 'package:aquaphonics/tabviews/report.dart';
 import 'package:aquaphonics/message_communication.dart';
-import 'package:aquaphonics/gui_helper.dart';
+import 'package:aquaphonics/ui/gui_helper.dart';
 
 class App extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -52,7 +52,10 @@ class StatusIcon extends StatefulWidget {
 
 class _StatusIcon extends State<StatefulWidget> {
   bool _isDeviceOnline = false;
-  void _setDeviceStatus(bool isDeviceOnline) => setState(() => _isDeviceOnline = isDeviceOnline);
+  void _setDeviceStatus(bool isDeviceOnline) { 
+    debugPrint(_getStatusText());
+    setState(() => _isDeviceOnline = isDeviceOnline);
+  }
 
   void _onMessageReceived(json) {
     switch (json["content"]) {
@@ -83,7 +86,7 @@ class _StatusIcon extends State<StatefulWidget> {
         icon: Icon(_getIcon(), color: Colors.white,),
         onPressed: () {},
       ),
-      onLongPress: () => GuiHelper.showSnackBar(context, (_isDeviceOnline) ? "Device is currently online" : "Device is currently offline"),
+      onLongPress: () => GuiHelper.showSnackBar(context, _getStatusText()),
     );
   }
 
@@ -91,5 +94,9 @@ class _StatusIcon extends State<StatefulWidget> {
   void dispose() {
     messageCom.removeConnectionListener(_onMessageReceived);
     super.dispose();
+  }
+
+  String _getStatusText() {
+    return _isDeviceOnline ? "Device is currently online" : "Device is currently offline";
   }
 }
