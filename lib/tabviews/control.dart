@@ -14,16 +14,10 @@ class Control extends StatelessWidget {
           ControlSliders(),
           Divider(),
           NumberInput(),
+          Divider(),
         ],
       ),
     );
-  }
-
-  Function manualFeed(BuildContext context) {
-    
-    return () {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(""),),);
-    };
   }
   
 }
