@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:string_validator/string_validator.dart';
 import 'package:aquaphonics/message_communication.dart';
 
 class ControlSliders extends StatelessWidget {
@@ -49,8 +50,9 @@ class _SliderWidget extends State<SliderWidget> with AutomaticKeepAliveClientMix
     messageCom.send("command", prefix + value.round().toString());
   }
 
-  void _onDataReceived(json) {
-    String command = json["content"];
+  void _onDataReceived(command) {
+    if (isJson(command)) return;      // stop parsing when content contains json
+
     if ((command.startsWith("S") && widget.id == SliderID.fan)
     || (command.startsWith("L") && widget.id == SliderID.light)
     || (command.startsWith("W") && widget.id == SliderID.water)
@@ -75,7 +77,7 @@ class _SliderWidget extends State<SliderWidget> with AutomaticKeepAliveClientMix
     Row(
       children: <Widget>[
         SizedBox(
-          width: 50,
+          width: 45,
           child: Text("${widget.name}"),
         ),
         Expanded(
@@ -90,7 +92,7 @@ class _SliderWidget extends State<SliderWidget> with AutomaticKeepAliveClientMix
             ),
         ),
         SizedBox(
-          width: 20,
+          width: 25,
           child: Text("${_value.round()}", textAlign: TextAlign.right,),
         ),
       ],
