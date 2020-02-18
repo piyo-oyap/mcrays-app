@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:aquaphonics/message_communication.dart';
+import 'package:string_validator/string_validator.dart';
 
 class HomeListView extends StatefulWidget {
   final HomeListNames type;
@@ -11,23 +13,37 @@ class HomeListView extends StatefulWidget {
 
 class _HomeListView extends State<HomeListView> {
   String label;
+  String value;
+
+  @override
+  void initState() {
+    super.initState();
+    label = _getNameFromEnum(widget.type);
+    value = "---";
+    messageCom.addUpdateListener(_onDataReceived);
+  }
+
   @override
   Widget build(BuildContext context) {
-    label = _getNameFromEnum(widget.type);
-    
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
           Expanded(child: Text("$label"),),
-          Text("100"),
+          Text("$value"),
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
       color: Color(0xFF64EAA2),
       height: 50,
     );
+  }
+
+  @override
+  void dispose() {
+    messageCom.removeUpdateListener(_onDataReceived);
+    super.dispose();
   }
 
   static String _getNameFromEnum(HomeListNames type) {
@@ -47,6 +63,35 @@ class _HomeListView extends State<HomeListView> {
       default:
         throw Exception("Enum out of range");
     }
+  }
+
+  void _onDataReceived(command) { {
+    if (isJson(command) && command["type"] == "realtime") {
+      switch (widget.type) {
+        case HomeListNames.WaterTemp:
+          value = "C°";
+          break;
+        case HomeListNames.WaterLevelAqua:
+          value = "%";
+          break;
+        case HomeListNames.WaterLevelTank:
+          value = "%";
+          break;
+        case HomeListNames.AirTemp:
+          value = "C°";
+          break;
+        case HomeListNames.AirHumid:
+          value = "%";
+          break;
+        case HomeListNames.RemainingFeeds:
+          value = "%";
+          break;
+        default:
+          throw Exception("Enum out of range");
+      }
+    }
+  }
+
   }
 }
 
