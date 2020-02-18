@@ -19,23 +19,28 @@ class _NumberInput extends State<NumberInput> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        SizedBox(
-          width: 100,
-          child: TextField(
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(0.0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
+        Container(
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 50,
+                child: TextFormField(
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    labelText: "Grams",
+                  ),
+                  controller: _controller,
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: false,
+                    signed: false,
+                  ),
+                  inputFormatters: <TextInputFormatter>[
+                    LengthLimitingTextInputFormatter(3),
+                    WhitelistingTextInputFormatter.digitsOnly,
+                    BlacklistingTextInputFormatter.singleLineFormatter,
+                  ],
+                ),
               ),
-            ),
-            controller: _controller,
-            keyboardType: TextInputType.numberWithOptions(
-              decimal: false,
-              signed: false,
-            ),
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
             ],
           ),
         ),
