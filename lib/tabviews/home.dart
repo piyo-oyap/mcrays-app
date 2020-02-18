@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/message_communication.dart';
+import 'package:aquaphonics/ui/home_grid.dart';
 import 'package:aquaphonics/ui/home_list.dart';
 
 class Home extends StatelessWidget {
@@ -36,38 +37,10 @@ class Home extends StatelessWidget {
               crossAxisSpacing: 20,
               crossAxisCount: 2,
               children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Alkalinity", style: gridTopText),
-                      Text("1000", style: gridMiddleText),
-                      Text("pH", style: gridBottomText),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  ),
-                  color: Color(gridBGColor),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      Text("Idk kuung ano", style: gridTopText),
-                      Text("100", style: gridMiddleText),
-                      Text("pH", style: gridBottomText),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  ),
-                  color: Color(gridBGColor),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Color(gridBGColor),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Color(gridBGColor),
-                ),
+                HomeGrid(type: HomeGridNames.Alkalinity),
+                HomeGrid(type: HomeGridNames.Ammonia),
+                HomeGrid(type: HomeGridNames.Chlorine),
+                HomeGrid(type: HomeGridNames.Nitrate),
               ],
             ),
           ),
