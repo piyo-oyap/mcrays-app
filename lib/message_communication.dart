@@ -17,6 +17,7 @@ class MessageCommunication {
 
   ObserverList<Function> _connectionListeners = new ObserverList<Function>();
   ObserverList<Function> _commandListeners = new ObserverList<Function>();
+  ObserverList<Function> _updateListeners = new ObserverList<Function>();
 
   void _onMessageReceived(message) {
   
@@ -25,12 +26,17 @@ class MessageCommunication {
     switch (json["type"]) {
       case "connection":
         _connectionListeners.forEach((Function callback) {
-          callback(json);
+          callback(json["content"]);
         });
         break;
       case "command":
         _commandListeners.forEach((Function callback) {
-          callback(json);
+          callback(json["content"]);
+        });
+        break;
+      case "update":
+        _updateListeners.forEach((Function callback) {
+          callback(json["content"]);
         });
         break;
     }
@@ -38,15 +44,22 @@ class MessageCommunication {
   addConnectionListener(Function callback) {
     _connectionListeners.add(callback);
   }
-  addCommandListener(Function callback) {
-    _commandListeners.add(callback);
-  }
-  
   removeConnectionListener(Function callback) {
     _connectionListeners.remove(callback);
   }
+
+  addCommandListener(Function callback) {
+    _commandListeners.add(callback);
+  }
   removeCommandListener(Function callback) {
     _commandListeners.remove(callback);
+  }
+
+  addUpdateListener(Function callback) {
+    _updateListeners.add(callback);
+  }
+  removeUpdateListener(Function callback) {
+    _updateListeners.remove(callback);
   }
 
   send(String type, String content) {
