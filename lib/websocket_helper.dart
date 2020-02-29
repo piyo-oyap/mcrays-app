@@ -1,23 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 WebSocketListener sockets = new WebSocketListener();
 
 // TODO: Make this configurable on app
-const String _SERVER_ADDRESS = "ws://10.0.0.4:5001";
+const String _SERVER_ADDRESS = "ws://10.0.0.33:5001";
 
 class WebSocketListener {
   static final WebSocketListener _sockets = new WebSocketListener._internal();
-
     factory WebSocketListener() {
       return _sockets;
     }
 
     WebSocketListener._internal();
-
     IOWebSocketChannel _channel;
-
     bool _isOn = false;
+
+    Timer _timer;
 
     ObserverList<Function> _listeners = new ObserverList<Function>();
 
@@ -30,7 +32,7 @@ class WebSocketListener {
         
 
         // TODO: Implement listeners for closed & error status
-        _channel.stream.listen(_onReceptionOfMessageFromServer, onDone: _handleDisconnection,);
+        _channel.stream.listen(_onReceptionOfMessageFromServer, onDone: _handleDisconnection, onError: _handleError);
 
       } catch(e){
         debugPrint("An exception occurred while trying to connect to the WebSocket server.");
@@ -40,7 +42,13 @@ class WebSocketListener {
 
   _handleDisconnection() {
     debugPrint("Connection to WebSocket server lost. Reconnecting...");
-    initWebSocket();
+    if (_timer == null || !_timer.isActive) {
+      _timer = new Timer(Duration(seconds: 5), initWebSocket);
+    }
+  }
+
+  _handleError(e) {
+    debugPrint("Error has occured while connecting to the WebSocket Server.");
   }
 
   reset() {
@@ -53,6 +61,7 @@ class WebSocketListener {
   send(String message){
     if (_channel != null){
       if (_channel.sink != null && _isOn){
+        debugPrint("Client sent data to server: " + message);
         _channel.sink.add(message);
       }
     }
@@ -66,7 +75,11 @@ class WebSocketListener {
   }
 
   _onReceptionOfMessageFromServer(message){
-    _isOn = true;
+    if (!_isOn) {
+      _isOn = true;
+      debugPrint("Connected to server successfully.");
+    }
+    debugPrint("Received data from server: " + message);
     _listeners.forEach((Function callback){
       callback(message);
     });
