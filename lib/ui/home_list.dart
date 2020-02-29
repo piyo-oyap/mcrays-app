@@ -12,14 +12,14 @@ class HomeListView extends StatefulWidget {
 }
 
 class _HomeListView extends State<HomeListView> {
-  String label;
-  String value;
+  String _label;
+  String _value;
 
   @override
   void initState() {
     super.initState();
-    label = _getNameFromEnum(widget.type);
-    value = "---";
+    _label = _getNameFromEnum(widget.type);
+    _value = "---";
     messageCom.addUpdateListener(_onDataReceived);
   }
 
@@ -30,8 +30,8 @@ class _HomeListView extends State<HomeListView> {
       padding: EdgeInsets.all(10),
       child: Row(
         children: <Widget>[
-          Expanded(child: Text("$label"),),
-          Text("$value"),
+          Expanded(child: Text("$_label")),
+          Text("$_value"),
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
@@ -65,8 +65,9 @@ class _HomeListView extends State<HomeListView> {
     }
   }
 
-  void _onDataReceived(command) { {
-    if (isJson(command) && command["type"] == "realtime") {
+  void _onDataReceived(data) { {
+    if (isJson(data) && data["type"] == "realtime") {
+      String value;
       switch (widget.type) {
         case HomeListNames.WaterTemp:
           value = "C°";
@@ -88,9 +89,10 @@ class _HomeListView extends State<HomeListView> {
           break;
         default:
           throw Exception("Enum out of range");
+        }
+        setState(() => _value = value);
       }
     }
-  }
 
   }
 }
