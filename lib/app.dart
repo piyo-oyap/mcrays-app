@@ -40,7 +40,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return materialApp;
   }
 }
@@ -57,16 +56,20 @@ class _StatusIcon extends State<StatefulWidget> {
     setState(() => _isDeviceOnline = isDeviceOnline);
   }
 
-  void _onMessageReceived(json) {
-    switch (json["content"]) {
+  void _onMessageReceived(data) {
+    String status = "...";
+    switch (data) {
     case "device_online":
       _setDeviceStatus(true);
+      status = "Device is online";
       break;
     case "device_offline":
       _setDeviceStatus(false);
+      status = "Device is offline";
       break;
     default:
     }
+    GuiHelper.showSnackBar(context, status);
   }
 
   IconData _getIcon() {
