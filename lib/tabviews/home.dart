@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:aquaphonics/message_communication.dart';
 import 'package:aquaphonics/ui/home_grid.dart';
 import 'package:aquaphonics/ui/home_list.dart';
 
@@ -9,24 +8,8 @@ class Home extends StatelessWidget {
   final TextStyle gridMiddleText =  TextStyle(fontSize: 60,fontFamily: "Open Sans", fontWeight: FontWeight.w800, color: Colors.white);
   final TextStyle gridBottomText =  TextStyle(fontSize: 15,fontFamily: "Open Sans", fontWeight: FontWeight.w400, color: Colors.white);
 
-  void _notifyDeviceStatus(json, context) {
-    String status = "...";
-    switch (json["content"]) {
-      case "device_online":
-        status = "Device is online";
-        break;
-      case "device_offline":
-        status = "Device is offline";
-        break;
-      default:
-    }
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(status)));
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    messageCom.addConnectionListener((message) => _notifyDeviceStatus(message, context));
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
