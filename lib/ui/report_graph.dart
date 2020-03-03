@@ -1,7 +1,14 @@
+import 'package:aquaphonics/datafield.dart';
+import 'package:aquaphonics/message_communication.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:string_validator/string_validator.dart';
+import 'gui_helper.dart';
 
 class ReportGraph extends StatefulWidget {
+  final DataField type;
+  ReportGraph(this.type);
+
   @override
   State<StatefulWidget> createState() => _ReportGraph.withSampleData();
 }
@@ -16,13 +23,38 @@ class _ReportGraph extends State<ReportGraph> {
     );
   }
 
+  void _onDataReceived(data) {
+    if (isJson(data) && data["type"] == "graph") {
+      // TODO: parse em into a graph
+      print(data["content"][widget.type.toString().split(".").last]);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    messageCom.addUpdateListener(_onDataReceived);
+  }
+
+  @override
+  void dispose() {
+    messageCom.removeUpdateListener(_onDataReceived);
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-      seriesList,
-      animate: true,
-      dateTimeFactory: charts.LocalDateTimeFactory(),
-      
+    return Column (
+      children: <Widget>[
+        Text(DataFieldStrings[widget.type]),
+        SizedBox(
+            height: GuiHelper.calculateHeightProportionalToScreen(context, 0.30),
+            child: new charts.TimeSeriesChart(
+              seriesList,
+              animate: true,
+              dateTimeFactory: charts.LocalDateTimeFactory(), 
+            ),
+        ),
+      ],
     );
   }
 
