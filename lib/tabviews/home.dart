@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/ui/home_grid.dart';
 import 'package:aquaphonics/ui/home_list.dart';
+import 'package:aquaphonics/datafield.dart';
 
 class Home extends StatelessWidget {
   final int gridBGColor = 0xFF64DCEA;
@@ -20,10 +21,10 @@ class Home extends StatelessWidget {
               crossAxisSpacing: 20,
               crossAxisCount: 2,
               children: <Widget>[
-                HomeGrid(type: HomeGridNames.Alkalinity),
-                HomeGrid(type: HomeGridNames.Ammonia),
-                HomeGrid(type: HomeGridNames.Chlorine),
-                HomeGrid(type: HomeGridNames.Nitrate),
+                HomeGrid(type: DataField.Alkalinity),
+                HomeGrid(type: DataField.Ammonia),
+                HomeGrid(type: DataField.Chlorine),
+                HomeGrid(type: DataField.Nitrate),
               ],
             ),
           ),
@@ -41,17 +42,17 @@ class Home extends StatelessWidget {
   final SliverChildListDelegate listChildren = 
     SliverChildListDelegate.fixed(
       <Widget>[
-        HomeListView(type: HomeListNames.WaterTemp),
+        HomeListView(type: DataField.WaterTemp),
         SizedBox(height: 15),
-        HomeListView(type: HomeListNames.WaterLevelAqua),
+        HomeListView(type: DataField.WaterLevelAquarium),
         SizedBox(height: 15),
-        HomeListView(type: HomeListNames.WaterLevelTank),
+        HomeListView(type: DataField.WaterLevelTank),
         SizedBox(height: 15),
-        HomeListView(type: HomeListNames.AirTemp),
+        HomeListView(type: DataField.AirTemp),
         SizedBox(height: 15),
-        HomeListView(type: HomeListNames.AirHumid),
+        HomeListView(type: DataField.AirHumidity),
         SizedBox(height: 15),
-        HomeListView(type: HomeListNames.RemainingFeeds),
+        HomeListView(type: DataField.Feeds),
         
       ],
     );

@@ -50,26 +50,23 @@ class StatusIcon extends StatefulWidget {
 }
 
 class _StatusIcon extends State<StatefulWidget> {
-  bool _isDeviceOnline = false;
+  bool _isDeviceOnline;
   void _setDeviceStatus(bool isDeviceOnline) { 
-    debugPrint(_getStatusText());
     setState(() => _isDeviceOnline = isDeviceOnline);
+    debugPrint(_getStatusText());
+    GuiHelper.showSnackBar(context, _getStatusText());
   }
 
   void _onMessageReceived(data) {
-    String status = "...";
     switch (data) {
     case "device_online":
       _setDeviceStatus(true);
-      status = "Device is online";
       break;
     case "device_offline":
       _setDeviceStatus(false);
-      status = "Device is offline";
       break;
     default:
     }
-    GuiHelper.showSnackBar(context, status);
   }
 
   IconData _getIcon() {
@@ -79,6 +76,7 @@ class _StatusIcon extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
+    _isDeviceOnline = false;
     messageCom.addConnectionListener(_onMessageReceived);
   }
 

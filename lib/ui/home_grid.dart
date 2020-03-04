@@ -1,6 +1,7 @@
 import 'package:aquaphonics/message_communication.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart';
+import 'package:aquaphonics/datafield.dart';
 
 class HomeGrid extends StatefulWidget {
   final int _gridBGColor = 0xFF64DCEA;
@@ -9,7 +10,7 @@ class HomeGrid extends StatefulWidget {
   final TextStyle _gridUnitText = TextStyle(fontSize: 15,fontFamily: "Open Sans", fontWeight: FontWeight.w400, color: Colors.white);
   final TextStyle _gridLastUpdatedText = TextStyle(fontSize: 13,fontFamily: "Open Sans", fontWeight: FontWeight.w400, color: Colors.white);
 
-  final HomeGridNames type;
+  final DataField type;
 
   HomeGrid({@required this.type});
 
@@ -27,8 +28,8 @@ class _HomeGrid extends State<HomeGrid> {
   void initState() {
     super.initState();
     messageCom.addUpdateListener(_onDataReceived);
-    _label = _getLabelFromEnum(widget.type);
-    _unit = _getUnitFromEnum(widget.type);
+    _label = DataFieldStrings[widget.type];
+    _unit = DataFieldSuffixes[widget.type];
     _value = "---";
     _lastUpdated = DateTime.now().toString();
   }
@@ -58,60 +59,17 @@ class _HomeGrid extends State<HomeGrid> {
   }
 
   void _onDataReceived(data) {
-    if (isJson(data) && data["type"] == "non-realtime") {
-      String value;
-      String lastUpdated;
-      switch (widget.type) {
-        case HomeGridNames.Alkalinity:
-
-        case HomeGridNames.Ammonia:
-
-        case HomeGridNames.Chlorine:
-
-        case HomeGridNames.Nitrate:
-
-        default:
-        break;
-      }
+    if (data["type"] == "non-realtime") {
+      String datatype = widget.type.toString().split(".").last;
+      var innerData = data["content"][datatype];
+      String value = innerData["value"].toString();
+      String lastUpdated = innerData["lastUpdated"];
+      
+      
       setState(() {
         _value = value;
         _lastUpdated = lastUpdated;
       });
     }
   }
-
-  String _getLabelFromEnum(HomeGridNames type) {
-    switch (type) {
-      case HomeGridNames.Alkalinity:
-        return "Alkalinity";
-      case HomeGridNames.Ammonia:
-        return "Ammonia";
-      case HomeGridNames.Chlorine:
-        return "Chlorine";
-      case HomeGridNames.Nitrate:
-        return "Nitrate";
-      default:
-        throw Exception("Enum out of range");
-    }
-  }
-
-  String _getUnitFromEnum(HomeGridNames type) {
-    switch (type) {
-      case HomeGridNames.Alkalinity:
-        return "pH";
-      case HomeGridNames.Ammonia:
-      case HomeGridNames.Chlorine:
-      case HomeGridNames.Nitrate:
-        return "ppa";
-      default:
-        throw Exception("Enum out of range");
-    }
-  }
-}
-
-enum HomeGridNames {// units:
-  Alkalinity,       // pH
-  Ammonia,          // ppa
-  Chlorine,         // ppa
-  Nitrate,          // ppa
 }
