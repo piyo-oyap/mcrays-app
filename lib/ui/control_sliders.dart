@@ -8,9 +8,9 @@ class ControlSliders extends StatelessWidget {
     
     return Column(
       children: <Widget>[
-        SliderWidget(name: "Fan", id: SliderID.fan),
-        SliderWidget(name: "Light", id: SliderID.light),
-        SliderWidget(name: "Water", id: SliderID.water),
+        SliderWidget("Fan", id: SliderID.fan, min: -100, max: 100),
+        SliderWidget("Light", id: SliderID.light),
+        SliderWidget("Water", id: SliderID.water),
       ],
     );
   }
@@ -19,7 +19,9 @@ class ControlSliders extends StatelessWidget {
 class SliderWidget extends StatefulWidget {
   final String name;
   final SliderID id;
-  SliderWidget({@required this.name, @required this.id});
+  final double min;
+  final double max;
+  SliderWidget(this.name, {@required this.id, this.min = 0, this.max = 255});
 
   @override
   State<StatefulWidget> createState() => _SliderWidget();
@@ -51,8 +53,6 @@ class _SliderWidget extends State<SliderWidget> with AutomaticKeepAliveClientMix
   }
 
   void _onDataReceived(command) {
-    if (isJson(command)) return;      // stop parsing when content contains json
-
     if ((command.startsWith("S") && widget.id == SliderID.fan)
     || (command.startsWith("L") && widget.id == SliderID.light)
     || (command.startsWith("W") && widget.id == SliderID.water)
@@ -85,14 +85,14 @@ class _SliderWidget extends State<SliderWidget> with AutomaticKeepAliveClientMix
           child:
             Slider(
               value: _value,
-              min: 0,
-              max: 255,
+              min: widget.min,
+              max: widget.max,
               onChanged: _setValue,
               onChangeEnd: _sendToServer,
             ),
         ),
         SizedBox(
-          width: 25,
+          width: 28,
           child: Text("${_value.round()}", textAlign: TextAlign.right,),
         ),
       ],
