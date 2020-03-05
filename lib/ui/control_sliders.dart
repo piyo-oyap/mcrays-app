@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:string_validator/string_validator.dart';
 import 'package:aquaphonics/message_communication.dart';
 
 class ControlSliders extends StatelessWidget {
