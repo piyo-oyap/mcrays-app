@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/ui/control_sliders.dart';
+import 'package:aquaphonics/ui/control_pump_buttons.dart';
 import 'package:aquaphonics/ui/control_number_input.dart';
 
 class Control extends StatelessWidget {
@@ -12,7 +13,8 @@ class Control extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         children: <Widget>[
           ControlSliders(),
-          Divider(),
+          ControlPumpButtons(),
+          Divider(),          
           NumberInput(),
           Divider(),
         ],
