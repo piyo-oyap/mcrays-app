@@ -31,6 +31,7 @@ class App extends StatelessWidget {
             Control(),
             Report(),
           ],
+          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     ),
@@ -54,7 +55,7 @@ class _StatusIcon extends State<StatefulWidget> {
   void _setDeviceStatus(bool isDeviceOnline) { 
     setState(() => _isDeviceOnline = isDeviceOnline);
     debugPrint(_getStatusText());
-    GuiHelper.showSnackBar(context, _getStatusText());
+    GuiHelper.showSnackBar(context, _getStatusUpdateText());
   }
 
   void _onMessageReceived(data) {
@@ -67,10 +68,6 @@ class _StatusIcon extends State<StatefulWidget> {
       break;
     default:
     }
-  }
-
-  IconData _getIcon() {
-    return (_isDeviceOnline) ? Icons.sync : Icons.sync_problem;
   }
 
   @override
@@ -97,7 +94,15 @@ class _StatusIcon extends State<StatefulWidget> {
     super.dispose();
   }
 
+  IconData _getIcon() {
+    return (_isDeviceOnline) ? Icons.done : Icons.do_not_disturb_alt;
+  }
+
   String _getStatusText() {
     return _isDeviceOnline ? "Device is currently online" : "Device is currently offline";
+  }
+
+  String _getStatusUpdateText() {
+    return _isDeviceOnline ? "Device is now online" : "Device is now offline";
   }
 }
