@@ -25,13 +25,17 @@ class App extends StatelessWidget {
           ],
           title: Text("McRays"),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            Home(),
-            Control(),
-            Report(),
-          ],
-          physics: NeverScrollableScrollPhysics(),
+        body: AbsorbPointer(
+          // TODO: make this widget stateful
+          absorbing: false,
+          child: TabBarView(
+            children: <Widget>[
+              Home(),
+              Control(),
+              Report(),
+            ],
+            physics: NeverScrollableScrollPhysics(),
+          ),
         ),
       ),
     ),
@@ -45,6 +49,9 @@ class App extends StatelessWidget {
   }
 }
 
+///////////////////////////
+/// StatusIcon
+/////////////////////////
 class StatusIcon extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _StatusIcon();
