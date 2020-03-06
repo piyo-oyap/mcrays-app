@@ -31,12 +31,12 @@ class _HomeGrid extends State<HomeGrid> {
     _label = DataFieldStrings[widget.type];
     _unit = DataFieldSuffixes[widget.type];
     _value = "---";
-    _lastUpdated = DateTime.now().toString();
+    _lastUpdated = "---";
   }
 
   @override
   void dispose() {
-    messageCom.addUpdateListener(_onDataReceived);
+    messageCom.removeUpdateListener(_onDataReceived);
     super.dispose();
   }
 
@@ -63,7 +63,7 @@ class _HomeGrid extends State<HomeGrid> {
       String datatype = widget.type.toString().split(".").last;
       var innerData = data["content"][datatype];
       String value = innerData["value"].toString();
-      String lastUpdated = innerData["lastUpdated"];
+      String lastUpdated = DateTime.fromMillisecondsSinceEpoch(innerData["lastUpdated"]).toString();
       
       
       setState(() {
