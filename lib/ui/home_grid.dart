@@ -61,9 +61,10 @@ class _HomeGrid extends State<HomeGrid> {
   void _onDataReceived(data) {
     if (data["type"] == "non-realtime") {
       String datatype = widget.type.toString().split(".").last;
-      var innerData = data["content"][datatype];
-      String value = innerData["value"].toString();
-      String lastUpdated = DateTime.fromMillisecondsSinceEpoch(innerData["lastUpdated"]).toString();
+      var content = data["content"];
+      if (content[datatype] == null) return;
+      String value = content[datatype].toString();
+      String lastUpdated = DateTime.fromMillisecondsSinceEpoch(data["content"]["lastUpdated"]).toString();
       
       
       setState(() {
