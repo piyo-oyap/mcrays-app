@@ -1,5 +1,7 @@
 import 'package:aquaphonics/message_communication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flushbar/flushbar.dart';
 
 class ControlPumpButtons extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
   void initState() {
     super.initState();
     messageCom.addCommandListener(_onDataReceived);
-    currentPump = null;
+    currentPump = PumpType.Off;
   }
 
   @override
@@ -26,14 +28,17 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
   Widget build(BuildContext context) {
     return Row (
       children: <Widget>[
+        Icon(
+          FontAwesome5Solid.tint,
+          size: 24.0,
+          color: Color(getIconColor()),
+        ),
         GestureDetector(
           child: RaisedButton(
             child: Text("Pump In"),
-            onPressed: () {},
-            // onLongPress: () {},
+            onPressed: showHelp,
             padding: EdgeInsets.all(10.0),
           ),
-          // onTap: () => ,
           onLongPress: () => enablePump(PumpType.In),
           onLongPressUp: () => disablePump(PumpType.In),
         ),
@@ -41,13 +46,11 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
         GestureDetector(
           child: RaisedButton(
             child: Text("Pump Out"),
-            onPressed: () {},
-            // onLongPress: () {},
+            onPressed: showHelp,
             padding: EdgeInsets.all(10.0),
           ),
           onLongPress: () => enablePump(PumpType.Out),
           onLongPressUp: () => disablePump(PumpType.Out),
-          
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,14 +73,40 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
           _setCurrentPump(PumpType.Out);
           break;
         case "0":
-          _setCurrentPump(null);
+          _setCurrentPump(PumpType.Off);
           break;
       }
     }
   }
 
+  void showHelp() {
+    // maybe revert back to normal snackbar...
+    Flushbar(
+      message: "Press & hold the button to start the pump",
+      duration: Duration(seconds: 5),
+      animationDuration: Duration(milliseconds: 500),
+      forwardAnimationCurve: Curves.easeOut,
+    )..show(context);
+  }
+
+  int getIconColor() {
+    switch (currentPump) {
+      case PumpType.In:
+        return 0xFF4CAF50;
+        break;
+      case PumpType.Out:
+        return 0xFFAB000D;
+        break;
+      case PumpType.Off:
+        return 0xFF494949;
+        break;
+      default:
+        throw Exception("Unknown enum value");
+    }
+  }
+
   void enablePump(PumpType type) {
-    if (currentPump == null) {
+    if (currentPump == PumpType.Off) {
       switch(type) {
         case PumpType.In:
           messageCom.send("command", "P1");
@@ -85,6 +114,7 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
         case PumpType.Out:
           messageCom.send("command", "P-1");
           break;
+        default:
       }
     }
   }
@@ -99,4 +129,5 @@ class _ControlPumpButtons extends State<ControlPumpButtons> {
 enum PumpType {
   In,
   Out,
+  Off,
 }
