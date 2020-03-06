@@ -53,7 +53,7 @@ class WebSocketListener {
 
   reset() {
     if (_channel != null && _channel.sink != null) {
-        // _channel.sink.close();
+        _channel.sink.close();
         _isOn = false;
     }
   }
