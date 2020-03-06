@@ -3,14 +3,23 @@ import 'package:aquaphonics/ui/home_grid.dart';
 import 'package:aquaphonics/ui/home_list.dart';
 import 'package:aquaphonics/datafield.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _Home();
+}
+
+class _Home extends State<Home> with AutomaticKeepAliveClientMixin {
   final int gridBGColor = 0xFF64DCEA;
   final TextStyle gridTopText =  TextStyle(fontSize: 20,fontFamily: "Open Sans", fontWeight: FontWeight.w600, color: Colors.white);
   final TextStyle gridMiddleText =  TextStyle(fontSize: 60,fontFamily: "Open Sans", fontWeight: FontWeight.w800, color: Colors.white);
   final TextStyle gridBottomText =  TextStyle(fontSize: 15,fontFamily: "Open Sans", fontWeight: FontWeight.w400, color: Colors.white);
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -35,7 +44,7 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
-      )
+      ),
     );
   }
 
