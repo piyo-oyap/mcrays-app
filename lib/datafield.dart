@@ -29,9 +29,9 @@ const Map<DataField, String> DataFieldStrings = {
 
 const Map<DataField, String> DataFieldSuffixes = {
   DataField.Alkalinity:         "pH",
-  DataField.Ammonia:            "ppa",
-  DataField.Chlorine:           "ppa",
-  DataField.Nitrate:            "ppa",
+  DataField.Ammonia:            "ppm",
+  DataField.Chlorine:           "ppm",
+  DataField.Nitrate:            "ppm",
   DataField.WaterLevelAquarium: "%",
   DataField.WaterLevelTank:     "%",
   DataField.WaterTemp:          "°C",
