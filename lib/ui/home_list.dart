@@ -50,9 +50,8 @@ class _HomeListView extends State<HomeListView> {
   void _onDataReceived(data) { 
     if (data["type"] == "realtime") {
       String value = data["content"][widget.type.toString().split(".").last].toString();
-      if (isNumeric(value)) {
+      if (isFloat(value)) {
         value = value + DataFieldSuffixes[widget.type];
-      
         setState(() => _value = value);
       }
       
