@@ -8,8 +8,8 @@ class ControlSliders extends StatelessWidget {
     return Column(
       children: <Widget>[
         SliderWidget("Fan", id: SliderID.fan, min: -100, max: 100),
-        SliderWidget("Light", id: SliderID.light),
-        SliderWidget("Water", id: SliderID.water),
+        SliderWidget("Light", id: SliderID.light, min: 0, max: 100),
+        SliderWidget("Water", id: SliderID.water, min: 0, max: 100),
       ],
     );
   }
@@ -20,7 +20,7 @@ class SliderWidget extends StatefulWidget {
   final SliderID id;
   final double min;
   final double max;
-  SliderWidget(this.name, {@required this.id, this.min = 0, this.max = 255});
+  SliderWidget(this.name, {@required this.id, this.min = 0, this.max = 100});
 
   @override
   State<StatefulWidget> createState() => _SliderWidget();
