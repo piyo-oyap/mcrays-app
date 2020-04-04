@@ -24,6 +24,8 @@ class WebSocketListener {
     ObserverList<Function> _listeners = new ObserverList<Function>();
 
     initWebSocket() async {
+      debugPrint("Connecting to $_SERVER_ADDRESS...");
+
       reset();
 
       try {
