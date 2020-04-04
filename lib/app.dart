@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:aquaphonics/ui/config_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/tabviews/home.dart';
 import 'package:aquaphonics/tabviews/control.dart';
 import 'package:aquaphonics/tabviews/report.dart';
 import 'package:aquaphonics/message_communication.dart';
 import 'package:aquaphonics/ui/gui_helper.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class App extends StatelessWidget {
   final materialApp = MaterialApp(
@@ -22,6 +24,7 @@ class App extends StatelessWidget {
           ),
           actions: <Widget>[
             StatusIcon(),
+            ConfigIcon(),
           ],
           title: Text("McRays"),
         ),
@@ -58,9 +61,9 @@ class StatusIcon extends StatefulWidget {
 }
 
 class _StatusIcon extends State<StatefulWidget> {
-  bool _isDeviceOnline;
-  void _setDeviceStatus(bool isDeviceOnline) { 
-    setState(() => _isDeviceOnline = isDeviceOnline);
+  status _currentStatus;
+  void _setStatus(status isDeviceOnline) { 
+    setState(() => _currentStatus = isDeviceOnline);
     debugPrint(_getStatusText());
     GuiHelper.showSnackBar(context, _getStatusUpdateText());
   }
@@ -68,10 +71,13 @@ class _StatusIcon extends State<StatefulWidget> {
   void _onMessageReceived(data) {
     switch (data) {
     case "device_online":
-      _setDeviceStatus(true);
+      _setStatus(status.device_online);
       break;
     case "device_offline":
-      _setDeviceStatus(false);
+      _setStatus(status.device_offline);
+      break;
+    case "server_offline":
+      _setStatus(status.server_offline);
       break;
     default:
     }
@@ -80,7 +86,7 @@ class _StatusIcon extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
-    _isDeviceOnline = false;
+    _currentStatus = status.server_offline;
     messageCom.addConnectionListener(_onMessageReceived);
   }
 
@@ -102,14 +108,50 @@ class _StatusIcon extends State<StatefulWidget> {
   }
 
   IconData _getIcon() {
-    return (_isDeviceOnline) ? Icons.done : Icons.do_not_disturb_alt;
+    switch (_currentStatus) {
+      case status.device_online:
+        return MaterialCommunityIcons.power_plug;
+        break;
+      case status.device_offline:
+        return MaterialCommunityIcons.power_plug_off;
+        break;
+      case status.server_offline:
+        return MaterialCommunityIcons.server_off;
+        break;
+    }
   }
 
   String _getStatusText() {
-    return _isDeviceOnline ? "Device is currently online" : "Device is currently offline";
+    switch (_currentStatus) {
+      case status.device_online:
+        return "Device is currently online";
+        break;
+      case status.device_offline:
+        return "Device is currently offine";
+        break;
+      case status.server_offline:
+        return "Server is currently offline";
+        break;
+    }
   }
 
   String _getStatusUpdateText() {
-    return _isDeviceOnline ? "Device is now online" : "Device is now offline";
+    switch (_currentStatus) {
+      case status.device_online:
+        return "Device is now online";
+        break;
+      case status.device_offline:
+        return "Device is now offline";
+        break;
+      case status.server_offline:
+        return "Disconnected from server, reconnecting...";
+        break;
+    }
   }
+}
+
+enum status {
+  device_online,
+  device_offline,
+  server_offline,
 }

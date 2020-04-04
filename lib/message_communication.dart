@@ -11,7 +11,7 @@ class MessageCommunication {
     return _message;
   }
   MessageCommunication._internal(){
-    sockets.initWebSocket();
+    sockets.connect();
     sockets.addListener(_onMessageReceived);
   }
 
