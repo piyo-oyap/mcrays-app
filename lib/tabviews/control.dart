@@ -8,6 +8,8 @@ class Control extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // messageCom // TODO: send request to server for slider values
+
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.all(10.0),
