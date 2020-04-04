@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aquaphonics/ui/config_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:aquaphonics/tabviews/home.dart';
 import 'package:aquaphonics/tabviews/control.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
           ),
           actions: <Widget>[
             StatusIcon(),
+            ConfigIcon(),
           ],
           title: Text("McRays"),
         ),
