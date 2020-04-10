@@ -64,7 +64,7 @@ class _StatusIcon extends State<StatefulWidget> {
   status _currentStatus;
   void _setStatus(status isDeviceOnline) { 
     setState(() => _currentStatus = isDeviceOnline);
-    debugPrint(_getStatusText());
+    debugPrint("DEV:\t${_getStatusText()}");
     GuiHelper.showSnackBar(context, _getStatusUpdateText());
   }
 
@@ -95,7 +95,7 @@ class _StatusIcon extends State<StatefulWidget> {
     return GestureDetector(
       child: IconButton(
         icon: Icon(_getIcon(), color: Colors.white,),
-        onPressed: () {},
+        onPressed: () => GuiHelper.showSnackBar(context, _getStatusText()),
       ),
       onLongPress: () => GuiHelper.showSnackBar(context, _getStatusText()),
     );
@@ -127,7 +127,7 @@ class _StatusIcon extends State<StatefulWidget> {
         return "Device is currently online";
         break;
       case status.device_offline:
-        return "Device is currently offine";
+        return "Device is currently offline";
         break;
       case status.server_offline:
         return "Server is currently offline";
