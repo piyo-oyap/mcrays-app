@@ -90,8 +90,9 @@ class _ConfigIcon extends State<ConfigIcon> {
                 if (_formKey.currentState.validate()) {
                   Config.setString(ConfigKeys.ip, _controllerIP.text);
                   Config.setInt(ConfigKeys.port, validator.toInt(_controllerPort.text));
-                  // TODO: change this snackbar into a toast
-                  GuiHelper.showSnackBar(context, "Settings saved successfully");
+
+                  GuiHelper.showToast("Settings saved successfully");
+                  // TODO: prevent reconnection if ip/port pair is left unchanged
                   sockets.connect();
                   Navigator.of(innerContext).pop();
                 }
